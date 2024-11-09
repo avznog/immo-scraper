@@ -28,7 +28,6 @@ async function main() {
     const ads: BienIciAd[] = await getAds(filters);
 
     // ? filtering ads
-    fs.writeFileSync("temp.json", JSON.stringify(ads));
     const filteredAds = ads.filter((ad: BienIciAd) => {
       if (ad.surfaceArea > 30 && ad.price <= 1200 && ad.isFurnished == false)
         return ad;
