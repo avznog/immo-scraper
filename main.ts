@@ -41,8 +41,7 @@ async function main() {
         })
       );
       const lastAd = previousAds[0];
-      if (true || lastAd.publicationDate < filteredAds[0].publicationDate) {
-        console.log("here");
+      if (lastAd.publicationDate < filteredAds[0].publicationDate) {
         imessage.send(
           process.env.PHONE_NUMBER,
           `[IMMO-SCRAPER] - Nouvelle annonce sur BienIci.\nRéférence : ${lastAd.reference}\nTitre: ${lastAd.title}\nPrix: ${lastAd.price} €\nPublié le : ${lastAd.publicationDate}\nURL: https://www.bienici.com/recherche/location/paris-75000/maisonvilla,appartement/2-pieces-et-plus?prix-max=1200&non-meuble=oui&tri=publication-desc`
@@ -69,7 +68,7 @@ async function main() {
         )
       )
     );
-  }, 1 * 1000);
+  }, 5 * 60 * 1000);
 }
 
 main();
