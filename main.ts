@@ -44,7 +44,13 @@ async function main() {
       if (lastAd.publicationDate < filteredAds[0].publicationDate) {
         imessage.send(
           process.env.PHONE_NUMBER,
-          `[IMMO-SCRAPER] - Nouvelle annonce sur BienIci.\nRéférence : ${lastAd.reference}\nTitre: ${lastAd.title}\nPrix: ${lastAd.price} €\nPublié le : ${lastAd.publicationDate}\nURL: https://www.bienici.com/recherche/location/paris-75000/maisonvilla,appartement/2-pieces-et-plus?prix-max=1200&non-meuble=oui&tri=publication-desc`
+          `[IMMO-SCRAPER] - Nouvelle annonce sur BienIci.\nRéférence : ${
+            lastAd.reference
+          }\nTitre: ${lastAd.title}\nPrix: ${
+            lastAd.price
+          } €\nPublié le : ${new Date(
+            lastAd.publicationDate
+          )}\nURL: https://www.bienici.com/recherche/location/paris-75000/maisonvilla,appartement/2-pieces-et-plus?prix-max=1200&non-meuble=oui&tri=publication-desc`
         );
         console.log("message sent");
       }
