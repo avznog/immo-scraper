@@ -11,6 +11,7 @@ export interface BienIciAd {
       lon: number;
     };
   };
+  title: string;
   city: string;
   postalCode: string;
   id: string;
