@@ -10,17 +10,16 @@ require("dotenv").config();
 async function main() {
   const filters: BienIciFilters = {
     size: 500,
-    from: 1,
+    from: 0,
     showAllModels: false,
     filterType: "rent",
     propertyType: ["flat"],
+    maxPrice: 1200,
     page: 1,
     sortBy: "publicationDate",
     sortOrder: "desc",
     onTheMarket: [true],
     zoneIdsByTypes: { zoneIds: ["-7444"] },
-    isNotFurnished: true,
-    maxPrice: 1200,
     minRooms: 2,
   };
 
@@ -29,27 +28,32 @@ async function main() {
 
     // ? filtering ads
     const filteredAds = ads.filter((ad: BienIciAd) => {
-      if (ad.surfaceArea > 30 && ad.price <= 1200 && ad.isFurnished == false)
-        return ad;
+      if (ad.surfaceArea > 30 && ad.price <= 1200) return ad;
     });
 
     try {
+      console.log("running");
       const previousAds: BienIciFiled[] = JSON.parse(
         fs.readFileSync("bien-ici-ads.json", {
           encoding: "utf-8",
         })
       );
       const lastAd = previousAds[0];
-      if (lastAd.publicationDate < filteredAds[0].publicationDate) {
+      if (
+        new Date(lastAd.publicationDate) <
+        new Date(filteredAds[0].publicationDate)
+      ) {
         imessage.send(
           process.env.PHONE_NUMBER,
           `[IMMO-SCRAPER] - Nouvelle annonce sur BienIci.\nRéférence : ${
             lastAd.reference
           }\nTitre: ${lastAd.title}\nPrix: ${
             lastAd.price
-          } €\nPublié le : ${new Date(
-            lastAd.publicationDate
-          )}\nURL: https://www.bienici.com/recherche/location/paris-75000/maisonvilla,appartement/2-pieces-et-plus?prix-max=1200&non-meuble=oui&tri=publication-desc`
+          } €\nPublié le : ${new Date(lastAd.publicationDate)}\nMeublé: ${
+            lastAd.isFurnished ? "Oui" : "Non"
+          }\nCode Postal: ${
+            lastAd.postalCode
+          }\nURL: https://www.bienici.com/recherche/location/paris-75000/maisonvilla,appartement/2-pieces-et-plus?prix-max=1200&non-meuble=oui&tri=publication-desc`
         );
         console.log("message sent");
       }
@@ -69,6 +73,8 @@ async function main() {
               price: ad.price,
               publicationDate: ad.publicationDate,
               title: ad.title,
+              isFurnished: ad.isFurnished,
+              postalCode: ad.postalCode,
             } as BienIciFiled)
         )
       )

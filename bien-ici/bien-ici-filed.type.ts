@@ -4,4 +4,6 @@ export interface BienIciFiled {
   price: number;
   publicationDate: string;
   title: string;
+  isFurnished: boolean;
+  postalCode: string;
 }
